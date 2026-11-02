@@ -1,6 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://oneill9.github.io/function-keys/sitemap.xml
-Sitemap: https://oneill9.github.io/tfl-mcp-server/sitemap.xml
-Sitemap: https://oneill9.github.io/trmnl-in-season/sitemap.xml
+Sitemap: https://oneill9.github.io/sitemap.xml

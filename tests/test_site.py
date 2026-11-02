@@ -1,0 +1,67 @@
+import unittest
+from html.parser import HTMLParser
+from pathlib import Path
+from xml.etree import ElementTree
+
+
+ROOT = Path(__file__).resolve().parents[1]
+BASE_URL = "https://oneill9.github.io/"
+NAMESPACE = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+PROJECTS = {"function-keys", "tfl-mcp-server", "trmnl-in-season", "print-to-notes"}
+
+
+class Page(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.tags = []
+
+    def handle_starttag(self, tag, attrs):
+        self.tags.append((tag, dict(attrs)))
+
+
+class SiteTests(unittest.TestCase):
+    def setUp(self):
+        self.page = Page()
+        self.page.feed((ROOT / "index.html").read_text())
+
+    def test_directory_links_to_every_project_and_source(self):
+        links = [attrs for tag, attrs in self.page.tags if tag == "a"]
+        projects = {attrs["href"] for attrs in links if attrs["href"].startswith(BASE_URL)}
+        self.assertEqual(projects, {f"{BASE_URL}{name}/" for name in PROJECTS})
+        for name in PROJECTS:
+            self.assertIn(f"https://github.com/oneill9/{name}", [link["href"] for link in links])
+
+    def test_metadata_and_local_assets(self):
+        self.assertIn(("html", {"lang": "en"}), self.page.tags)
+        self.assertEqual(sum(tag == "h1" for tag, _ in self.page.tags), 1)
+        self.assertIn(("link", {"rel": "canonical", "href": BASE_URL}), self.page.tags)
+        for tag, attrs in self.page.tags:
+            if tag == "meta" and attrs.get("name") == "description":
+                self.assertTrue(attrs["content"].strip())
+            asset = attrs.get("src") if tag == "script" else attrs.get("href") if tag == "link" else None
+            if asset and not asset.startswith("https://"):
+                self.assertTrue((ROOT / asset).is_file(), asset)
+
+    def test_sitemap_index_covers_root_and_all_projects(self):
+        index = ElementTree.parse(ROOT / "sitemap.xml")
+        self.assertEqual(index.getroot().tag, f"{{{NAMESPACE['s']}}}sitemapindex")
+        locations = [loc.text for loc in index.findall("s:sitemap/s:loc", NAMESPACE)]
+        self.assertEqual(len(locations), len(set(locations)))
+        self.assertEqual(set(locations), {f"{BASE_URL}pages-sitemap.xml"} | {
+            f"{BASE_URL}{name}/sitemap.xml" for name in PROJECTS - {"print-to-notes"}
+        })
+        pages = ElementTree.parse(ROOT / "pages-sitemap.xml")
+        self.assertEqual(pages.getroot().tag, f"{{{NAMESPACE['s']}}}urlset")
+        self.assertEqual({loc.text for loc in pages.findall("s:url/s:loc", NAMESPACE)},
+                         {BASE_URL, f"{BASE_URL}print-to-notes/"})
+
+    def test_robots_allows_crawling_and_advertises_index(self):
+        lines = (ROOT / "robots.txt").read_text().splitlines()
+        self.assertIn("User-agent: *", lines)
+        self.assertIn("Allow: /", lines)
+        self.assertEqual([line for line in lines if line.startswith("Sitemap:")],
+                         [f"Sitemap: {BASE_URL}sitemap.xml"])
+
+
+if __name__ == "__main__":
+    unittest.main()
