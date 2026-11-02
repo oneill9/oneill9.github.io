@@ -10,6 +10,10 @@ Each project site continues to deploy from its own repository.
 - `assets/fonts` contains locally hosted Instrument Sans and Instrument Serif fonts and their licenses.
 - `assets/previews` contains screenshots of the project pages, cropped inside
   the coloured thumbnail panels. These are static images, not embedded sites.
+- GitHub icons link to the four public project repositories. Phrase Flip and
+  RedditViewer have private repositories and do not have source links.
+- `assets/icons` contains the GitHub mark from [Octicons](https://github.com/primer/octicons)
+  and its MIT license.
 - `sitemap.xml` is a sitemap index for the existing project sitemaps and `pages-sitemap.xml`.
 - `pages-sitemap.xml` covers this homepage and Print to Notes, which has no sitemap of its own.
 - `robots.txt` allows crawling and advertises the sitemap index for the entire host.

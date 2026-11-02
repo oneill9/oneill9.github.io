@@ -62,6 +62,10 @@ h2 { margin: 0; font-size: 1.25rem; font-weight: 550; letter-spacing: -0.025em; 
 .project-link:hover h2 { text-decoration: underline; text-underline-offset: 0.2em; }
 .project-info > p { margin: 0.5rem 0 0.8rem; max-width: 30rem; font-size: 0.93rem; color: #595c55; line-height: 1.6; }
 .project-type { font-size: 0.75rem; color: #62645e; }
+.project-meta { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.repo-link { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 36px; height: 36px; margin: -8px -8px -8px 0; border-radius: 50%; }
+.repo-link:hover { background: #e9ebe4; }
+.repo-link img { display: block; }
 /* Page excerpts sit inside each coloured panel rather than filling it. */
 .phrase-art { background: #e3e9da; }
 .keys-art { background: #282d38; }

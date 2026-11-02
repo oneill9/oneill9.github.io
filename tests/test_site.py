@@ -43,6 +43,16 @@ class SiteTests(unittest.TestCase):
             self.assertNotIn(phrase, html)
         self.assertIn("Selected <em>work.</em>", html)
 
+    def test_repository_links_cover_only_public_projects(self):
+        links = [attrs for tag, attrs in self.page.tags
+                 if tag == "a" and attrs.get("class") == "repo-link"]
+        self.assertEqual({link["href"] for link in links}, {
+            f"https://github.com/oneill9/{name}" for name in PROJECTS
+        })
+        self.assertEqual(len(links), len(PROJECTS))
+        for link in links:
+            self.assertIn("repository on GitHub", link["aria-label"])
+
     def test_fonts_are_local_and_licensed(self):
         css = (ROOT / "styles.css").read_text()
         fonts = re.findall(r'url\("([^"]+)"\)', css)
@@ -64,7 +74,8 @@ class SiteTests(unittest.TestCase):
                 self.assertTrue((ROOT / asset.split("?")[0]).is_file(), asset)
 
     def test_each_project_has_a_local_page_preview(self):
-        images = [attrs for tag, attrs in self.page.tags if tag == "img"]
+        images = [attrs for tag, attrs in self.page.tags
+                  if tag == "img" and attrs.get("src", "").startswith("assets/previews/")]
         self.assertEqual(len(images), len(PROJECT_URLS))
         self.assertEqual(len({image["src"] for image in images}), len(images))
         for image in images:
