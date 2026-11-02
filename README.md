@@ -46,8 +46,9 @@ The tests check project links, copy, metadata, local assets, font licenses,
 screenshot dimensions, sitemap coverage, and crawler discovery.
 
 To refresh a thumbnail, capture the relevant page at a 1000 × 680 viewport and
-replace its PNG in `assets/previews`. Phrase Flip clips the hero; RedditViewer
-clips the controls with settings open. In Season uses the UK calendar table.
+replace its PNG in `assets/previews`. Phrase Flip clips the hero. RedditViewer
+uses a 1280 × 800 capture of a loaded kintsugi pottery-repair video from
+`r/artisanvideos`, paused at 00:54 with the controls visible. In Season uses the UK calendar table.
 Update the image's HTML width and height if the captured crop changes dimensions.
 The CSS controls the crop and framing inside the portfolio.
 
