@@ -1,5 +1,6 @@
 import unittest
 import re
+import struct
 from html.parser import HTMLParser
 from pathlib import Path
 from xml.etree import ElementTree
@@ -58,9 +59,23 @@ class SiteTests(unittest.TestCase):
         for tag, attrs in self.page.tags:
             if tag == "meta" and attrs.get("name") == "description":
                 self.assertTrue(attrs["content"].strip())
-            asset = attrs.get("src") if tag == "script" else attrs.get("href") if tag == "link" else None
+            asset = attrs.get("src") if tag in {"script", "img"} else attrs.get("href") if tag == "link" else None
             if asset and not asset.startswith("https://"):
-                self.assertTrue((ROOT / asset).is_file(), asset)
+                self.assertTrue((ROOT / asset.split("?")[0]).is_file(), asset)
+
+    def test_each_project_has_a_local_page_preview(self):
+        images = [attrs for tag, attrs in self.page.tags if tag == "img"]
+        self.assertEqual(len(images), len(PROJECT_URLS))
+        self.assertEqual(len({image["src"] for image in images}), len(images))
+        for image in images:
+            self.assertTrue(image["src"].startswith("assets/previews/"))
+            data = (ROOT / image["src"]).read_bytes()
+            self.assertEqual(data[:8], b"\x89PNG\r\n\x1a\n")
+            self.assertEqual(struct.unpack(">II", data[16:24]),
+                             (int(image["width"]), int(image["height"])))
+            self.assertEqual(image["alt"], "")
+            self.assertEqual(image["decoding"], "async")
+        self.assertTrue(all(image["loading"] == "lazy" for image in images[2:]))
 
     def test_sitemap_index_covers_root_and_all_projects(self):
         index = ElementTree.parse(ROOT / "sitemap.xml")

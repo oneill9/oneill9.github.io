@@ -8,6 +8,8 @@ Each project site continues to deploy from its own repository.
 - `index.html` presents six projects, including Phrase Flip at <https://phraseflip.com/>
   and RedditViewer at <https://www.syntacticbrownsugar.tech/RedditViewer/>.
 - `assets/fonts` contains locally hosted Instrument Sans and Instrument Serif fonts and their licenses.
+- `assets/previews` contains screenshots of the project pages, cropped inside
+  the coloured thumbnail panels. These are static images, not embedded sites.
 - `sitemap.xml` is a sitemap index for the existing project sitemaps and `pages-sitemap.xml`.
 - `pages-sitemap.xml` covers this homepage and Print to Notes, which has no sitemap of its own.
 - `robots.txt` allows crawling and advertises the sitemap index for the entire host.
@@ -41,7 +43,13 @@ python3 -m unittest discover -s tests -v
 ```
 
 The tests check project links, copy, metadata, local assets, font licenses,
-sitemap coverage, and crawler discovery.
+screenshot dimensions, sitemap coverage, and crawler discovery.
+
+To refresh a thumbnail, capture the relevant page at a 1000 × 680 viewport and
+replace its PNG in `assets/previews`. Phrase Flip clips the hero; RedditViewer
+clips the controls with settings open. In Season uses the UK calendar table.
+Update the image's HTML width and height if the captured crop changes dimensions.
+The CSS controls the crop and framing inside the portfolio.
 
 Typography: [Instrument Serif](https://github.com/Instrument/instrument-serif)
 and [Instrument Sans](https://github.com/Instrument/instrument-sans), both under
