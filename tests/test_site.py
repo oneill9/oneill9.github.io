@@ -9,7 +9,9 @@ ROOT = Path(__file__).resolve().parents[1]
 BASE_URL = "https://oneill9.github.io/"
 NAMESPACE = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 PROJECTS = {"function-keys", "tfl-mcp-server", "trmnl-in-season", "print-to-notes"}
-PROJECT_URLS = {f"{BASE_URL}{name}/" for name in PROJECTS} | {"https://phraseflip.com/"}
+PROJECT_URLS = {f"{BASE_URL}{name}/" for name in PROJECTS} | {
+    "https://phraseflip.com/", "https://www.syntacticbrownsugar.tech/RedditViewer/"
+}
 
 
 class Page(HTMLParser):
@@ -26,13 +28,13 @@ class SiteTests(unittest.TestCase):
         self.page = Page()
         self.page.feed((ROOT / "index.html").read_text())
 
-    def test_portfolio_links_to_every_project_including_phrase_flip(self):
+    def test_portfolio_links_to_every_project(self):
         links = [attrs for tag, attrs in self.page.tags if tag == "a"]
         projects = [attrs["href"] for attrs in links if attrs.get("class") == "project-link"]
         self.assertEqual(set(projects), PROJECT_URLS)
         self.assertEqual(len(projects), len(PROJECT_URLS))
         self.assertEqual(projects[0], "https://phraseflip.com/")
-        self.assertEqual(sum(tag == "article" for tag, _ in self.page.tags), 5)
+        self.assertEqual(sum(tag == "article" for tag, _ in self.page.tags), len(PROJECT_URLS))
 
     def test_portfolio_copy_focuses_on_the_work(self):
         html = (ROOT / "index.html").read_text()

@@ -5,7 +5,8 @@ Each project site continues to deploy from its own repository.
 
 ## Contents
 
-- `index.html` presents five projects, including Phrase Flip at <https://phraseflip.com/>.
+- `index.html` presents six projects, including Phrase Flip at <https://phraseflip.com/>
+  and RedditViewer at <https://www.syntacticbrownsugar.tech/RedditViewer/>.
 - `assets/fonts` contains locally hosted Instrument Sans and Instrument Serif fonts and their licenses.
 - `sitemap.xml` is a sitemap index for the existing project sitemaps and `pages-sitemap.xml`.
 - `pages-sitemap.xml` covers this homepage and Print to Notes, which has no sitemap of its own.
