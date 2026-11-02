@@ -3,55 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>oneill9 | Projects</title>
-    <meta name="description" content="Open source projects by oneill9: macOS utilities, London transport tools, and seasonal food calendars.">
+    <title>oneill9 | Selected work</title>
+    <meta name="description" content="Apps, extensions, and other projects by oneill9. Phrase Flip, Function Keys, TfL MCP Server, In Season, and Print to Notes.">
     <link rel="canonical" href="https://oneill9.github.io/">
-    <meta property="og:title" content="oneill9 | Projects">
-    <meta property="og:description" content="macOS utilities, London transport tools, and seasonal food calendars.">
+    <meta property="og:title" content="oneill9 | Selected work">
+    <meta property="og:description" content="Apps, extensions, and other projects I've made.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://oneill9.github.io/">
+    <link rel="preload" href="assets/fonts/InstrumentSerif-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/InstrumentSans.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <main>
-        <header>
-            <a class="profile" href="https://github.com/oneill9">oneill9 / GitHub</a>
-            <h1>Small tools.<br>Useful things.</h1>
-            <p class="intro">Open source projects for your Mac, your commute, and what's in season.</p>
+    <a class="skip-link" href="#work">Skip to projects</a>
+    <div class="page">
+        <header class="masthead">
+            <span class="wordmark">oneill9<span class="wordmark-dot" aria-hidden="true">.</span></span>
+            <a href="https://github.com/oneill9">GitHub <span aria-hidden="true">↗</span></a>
         </header>
-
-        <section aria-labelledby="projects-heading">
-            <h2 id="projects-heading">Projects</h2>
-            <div class="projects">
-                <article>
-                    <p class="category">macOS</p>
-                    <h3><a href="https://oneill9.github.io/function-keys/">Function Keys <span aria-hidden="true">↗</span></a></h3>
-                    <p>View and toggle how your function keys behave, straight from the menu bar.</p>
-                    <a class="source" href="https://github.com/oneill9/function-keys">Source code <span class="visually-hidden">for Function Keys</span></a>
-                </article>
-                <article>
-                    <p class="category">London transport</p>
-                    <h3><a href="https://oneill9.github.io/tfl-mcp-server/">TfL MCP Server <span aria-hidden="true">↗</span></a></h3>
-                    <p>Give AI assistants access to live London transport information with the Model Context Protocol.</p>
-                    <a class="source" href="https://github.com/oneill9/tfl-mcp-server">Source code <span class="visually-hidden">for TfL MCP Server</span></a>
-                </article>
-                <article>
-                    <p class="category">Food &amp; TRMNL</p>
-                    <h3><a href="https://oneill9.github.io/trmnl-in-season/">In Season <span aria-hidden="true">↗</span></a></h3>
-                    <p>Find seasonal fruit and vegetables by country, with calendars for the web and TRMNL displays.</p>
-                    <a class="source" href="https://github.com/oneill9/trmnl-in-season">Source code <span class="visually-hidden">for In Season</span></a>
-                </article>
-                <article>
-                    <p class="category">macOS · Experimental</p>
-                    <h3><a href="https://oneill9.github.io/print-to-notes/">Print to Notes <span aria-hidden="true">↗</span></a></h3>
-                    <p>A virtual printer that captures print jobs for import into Apple Notes.</p>
-                    <a class="source" href="https://github.com/oneill9/print-to-notes">Source code <span class="visually-hidden">for Print to Notes</span></a>
-                </article>
+        <main>
+            <div class="intro">
+                <h1>Selected <em>work.</em></h1>
+                <p>Apps, extensions, and other projects I've made.</p>
             </div>
-        </section>
-        <footer>
-            <p>Built in the open. <a href="https://github.com/oneill9">Find me on GitHub</a>.</p>
-        </footer>
-    </main>
+            <section class="projects" id="work" aria-label="Projects">
+                <article class="project phrase-flip">
+                    <a class="project-link" href="https://phraseflip.com/">
+                        <div class="artwork phrase-art" aria-hidden="true">
+                            <div class="art-label">Phrase Flip <span>EN → FR</span></div>
+                            <div class="phrase-paper">
+                                <div class="paper-rule"></div>
+                                <p>One more page.<br><span class="translation">Encore une page.</span></p>
+                                <span class="translation-note">One more page.</span>
+                                <div class="paper-lines"><i></i><i></i><i></i></div>
+                            </div>
+                            <span class="art-caption">Sentences translated as you read.</span>
+                        </div>
+                        <div class="project-info">
+                            <div class="project-title"><h2>Phrase Flip</h2><span class="visit-arrow" aria-hidden="true">↗</span></div>
+                            <p>Read the web with sentences in the language you're learning. Hover to see the original.</p>
+                            <span class="project-type">Browser extension</span>
+                        </div>
+                    </a>
+                </article>
+                <article class="project function-keys">
+                    <a class="project-link" href="https://oneill9.github.io/function-keys/">
+                        <div class="artwork keys-art" aria-hidden="true">
+                            <div class="key-pair"><span class="keycap">fn</span><span class="keycap">F1</span></div>
+                            <span class="art-caption">Function keys / media controls</span>
+                        </div>
+                        <div class="project-info">
+                            <div class="project-title"><h2>Function Keys</h2><span class="visit-arrow" aria-hidden="true">↗</span></div>
+                            <p>Switch between function keys and media controls from your Mac's menu bar.</p>
+                            <span class="project-type">macOS app</span>
+                        </div>
+                    </a>
+                </article>
+                <article class="project tfl">
+                    <a class="project-link" href="https://oneill9.github.io/tfl-mcp-server/">
+                        <div class="artwork tfl-art" aria-hidden="true">
+                            <div class="route"><span class="station"></span><i></i><span class="station"></span><i></i><span class="station"></span></div>
+                            <div class="route-copy">London<br><em>transport.</em></div>
+                        </div>
+                        <div class="project-info">
+                            <div class="project-title"><h2>TfL MCP Server</h2><span class="visit-arrow" aria-hidden="true">↗</span></div>
+                            <p>Live arrivals, service updates, and journey planning for AI assistants.</p>
+                            <span class="project-type">London transport · MCP</span>
+                        </div>
+                    </a>
+                </article>
+                <article class="project in-season">
+                    <a class="project-link" href="https://oneill9.github.io/trmnl-in-season/">
+                        <div class="artwork season-art" aria-hidden="true">
+                            <span class="season-word">In<br><em>season.</em></span>
+                            <div class="season-stamp">Fruit &amp; veg<br>by the month</div>
+                        </div>
+                        <div class="project-info">
+                            <div class="project-title"><h2>In Season</h2><span class="visit-arrow" aria-hidden="true">↗</span></div>
+                            <p>Fruit and vegetable calendars by country, for the web and TRMNL displays.</p>
+                            <span class="project-type">Website · TRMNL plugin</span>
+                        </div>
+                    </a>
+                </article>
+                <article class="project print-to-notes">
+                    <a class="project-link" href="https://oneill9.github.io/print-to-notes/">
+                        <div class="artwork notes-art" aria-hidden="true">
+                            <div class="note-sheet"><div class="note-top"></div><span>Print<br>to<br><em>Notes.</em></span></div>
+                        </div>
+                        <div class="project-info">
+                            <div class="project-title"><h2>Print to Notes</h2><span class="visit-arrow" aria-hidden="true">↗</span></div>
+                            <p>A virtual printer that captures print jobs for import into Apple Notes.</p>
+                            <span class="project-type">macOS experiment</span>
+                        </div>
+                    </a>
+                </article>
+            </section>
+        </main>
+        <footer><span>oneill9</span><span>Thanks for having a look.</span></footer>
+    </div>
 </body>
 </html>

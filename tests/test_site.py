@@ -1,4 +1,5 @@
 import unittest
+import re
 from html.parser import HTMLParser
 from pathlib import Path
 from xml.etree import ElementTree
@@ -8,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BASE_URL = "https://oneill9.github.io/"
 NAMESPACE = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 PROJECTS = {"function-keys", "tfl-mcp-server", "trmnl-in-season", "print-to-notes"}
+PROJECT_URLS = {f"{BASE_URL}{name}/" for name in PROJECTS} | {"https://phraseflip.com/"}
 
 
 class Page(HTMLParser):
@@ -24,12 +26,28 @@ class SiteTests(unittest.TestCase):
         self.page = Page()
         self.page.feed((ROOT / "index.html").read_text())
 
-    def test_directory_links_to_every_project_and_source(self):
+    def test_portfolio_links_to_every_project_including_phrase_flip(self):
         links = [attrs for tag, attrs in self.page.tags if tag == "a"]
-        projects = {attrs["href"] for attrs in links if attrs["href"].startswith(BASE_URL)}
-        self.assertEqual(projects, {f"{BASE_URL}{name}/" for name in PROJECTS})
-        for name in PROJECTS:
-            self.assertIn(f"https://github.com/oneill9/{name}", [link["href"] for link in links])
+        projects = [attrs["href"] for attrs in links if attrs.get("class") == "project-link"]
+        self.assertEqual(set(projects), PROJECT_URLS)
+        self.assertEqual(len(projects), len(PROJECT_URLS))
+        self.assertEqual(projects[0], "https://phraseflip.com/")
+        self.assertEqual(sum(tag == "article" for tag, _ in self.page.tags), 5)
+
+    def test_portfolio_copy_focuses_on_the_work(self):
+        html = (ROOT / "index.html").read_text()
+        for phrase in ["Built in the open", "Open source projects", "Small tools.", "Source code"]:
+            self.assertNotIn(phrase, html)
+        self.assertIn("Selected <em>work.</em>", html)
+
+    def test_fonts_are_local_and_licensed(self):
+        css = (ROOT / "styles.css").read_text()
+        fonts = re.findall(r'url\("([^"]+)"\)', css)
+        self.assertEqual(len(fonts), 3)
+        for font in fonts:
+            self.assertEqual((ROOT / font).read_bytes()[:4], b"wOF2")
+        for family in ["InstrumentSans", "InstrumentSerif"]:
+            self.assertIn("SIL OPEN FONT LICENSE", (ROOT / f"assets/fonts/{family}-LICENSE.txt").read_text())
 
     def test_metadata_and_local_assets(self):
         self.assertIn(("html", {"lang": "en"}), self.page.tags)

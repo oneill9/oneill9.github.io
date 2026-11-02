@@ -1,53 +1,147 @@
+@font-face {
+    font-family: "Instrument Sans";
+    src: url("assets/fonts/InstrumentSans.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Instrument Serif";
+    src: url("assets/fonts/InstrumentSerif-Regular.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Instrument Serif";
+    src: url("assets/fonts/InstrumentSerif-Italic.woff2") format("woff2");
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+}
+
 :root {
-    color-scheme: light dark;
-    --background: #f6f5f0;
-    --surface: #fffefa;
-    --text: #20312d;
-    --muted: #596a64;
-    --accent: #18604d;
-    --border: #d8ded5;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    line-height: 1.6;
-    background: var(--background);
-    color: var(--text);
+    color-scheme: light;
+    font-family: "Instrument Sans", sans-serif;
+    font-synthesis: none;
+    background: #f9f9f6;
+    color: #242522;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
 }
 
 * { box-sizing: border-box; }
 body { margin: 0; }
-main { max-width: 64rem; margin: auto; padding: 4rem 1.5rem 2rem; }
-a { color: var(--accent); text-underline-offset: 0.2em; }
-a:hover { text-decoration-thickness: 0.15em; }
-a:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; border-radius: 2px; }
-.profile { font-size: 0.9rem; font-weight: 650; }
-h1 { font-size: clamp(2.8rem, 7vw, 5rem); line-height: 1.08; letter-spacing: -0.045em; margin: 2.5rem 0 1.5rem; }
-.intro { max-width: 35rem; font-size: 1.2rem; color: var(--muted); }
-section { margin-top: 3.5rem; }
-h2 { font-size: 1rem; margin-bottom: 1rem; }
-.projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
-article { padding: 1.75rem; background: var(--surface); border: 1px solid var(--border); border-radius: 0.75rem; }
-.category { margin: 0; color: var(--muted); font-size: 0.8rem; }
-h3 { font-size: 1.4rem; line-height: 1.3; margin: 0.6rem 0 1rem; }
-h3 a { text-decoration: none; }
-h3 a:hover { text-decoration: underline; }
-h3 span { font-size: 1rem; }
-article > p:not(.category) { color: var(--muted); }
-.source { font-size: 0.9rem; }
-footer { margin-top: 3rem; color: var(--muted); font-size: 0.9rem; }
-.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+a { color: inherit; text-underline-offset: 0.25em; }
+a:focus-visible { outline: 3px solid #3756d8; outline-offset: 7px; }
+.page { max-width: 1440px; margin: auto; padding: 0 5%; }
+.skip-link { position: absolute; top: -5rem; left: 1rem; padding: 1rem; background: #fff; z-index: 2; }
+.skip-link:focus { top: 1rem; }
+.masthead { display: flex; align-items: center; justify-content: space-between; padding: 2rem 0; border-bottom: 1px solid #dcded7; }
+.wordmark { font-size: 1.5rem; font-weight: 650; letter-spacing: -0.08em; }
+.wordmark-dot { color: #62763c; }
+.masthead a { font-size: 0.875rem; text-decoration: none; }
+.masthead a:hover { text-decoration: underline; }
+.masthead a span { margin-left: 0.5rem; }
+.intro { padding: 4.5rem 0 4rem; display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; }
+h1 { font-family: "Instrument Serif", Georgia, serif; font-size: clamp(4.5rem, 9vw, 8.5rem); font-weight: 400; line-height: 0.95; letter-spacing: -0.045em; margin: 0; }
+h1 em { font-weight: 400; }
+.intro > p { max-width: 15rem; margin: 0 0 0.3rem; font-size: 1rem; color: #62645e; }
+.projects { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 3rem 1.5rem; }
+.project { min-width: 0; grid-column: span 2; }
+.phrase-flip, .function-keys { grid-column: span 3; }
+.project-link { display: block; text-decoration: none; border-radius: 3px; }
+.artwork { height: clamp(14rem, 23vw, 20rem); position: relative; overflow: hidden; border-radius: 4px; }
+.phrase-flip .artwork, .function-keys .artwork { height: clamp(19rem, 30vw, 26rem); }
+.project-info { padding-top: 1.15rem; }
+.project-title { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+h2 { margin: 0; font-size: 1.25rem; font-weight: 550; letter-spacing: -0.025em; }
+.visit-arrow { font-size: 1.3rem; transition: transform 180ms ease; }
+.project-link:hover .visit-arrow, .project-link:focus-visible .visit-arrow { transform: translate(3px, -3px); }
+.project-link:hover h2 { text-decoration: underline; text-underline-offset: 0.2em; }
+.project-info > p { margin: 0.5rem 0 0.8rem; max-width: 30rem; font-size: 0.93rem; color: #595c55; line-height: 1.6; }
+.project-type { font-size: 0.75rem; color: #62645e; }
+.art-caption { position: absolute; bottom: 1.5rem; left: 1.75rem; font-size: 0.8rem; }
 
-@media (max-width: 38rem) {
-    main { padding-top: 2rem; }
-    .projects { grid-template-columns: 1fr; }
-    article { padding: 1.5rem; }
+/* These are illustrations of the projects, not interactive product controls. */
+.phrase-art { background: #e3e9da; color: #263c30; padding: 1.5rem 1.75rem; }
+.art-label { display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; font-weight: 600; }
+.art-label > span { font-size: 0.7rem; font-weight: 400; letter-spacing: 0.08em; }
+.phrase-paper { position: absolute; left: 13%; right: 9%; top: 22%; padding: 1.8rem 2rem; background: #fffefa; box-shadow: 0 8px 24px #1b342712; transform: rotate(-5deg); transition: transform 220ms ease; }
+.paper-rule { width: 2rem; height: 3px; background: #6d825c; }
+.phrase-paper p { font-family: "Instrument Serif", Georgia, serif; font-size: clamp(1.8rem, 3.2vw, 2.8rem); line-height: 1.2; letter-spacing: -0.025em; margin: 1rem 0 0.4rem; }
+.translation { text-decoration: underline; text-decoration-color: #8da97a; text-underline-offset: 0.15em; }
+.translation-note { font-size: 0.7rem; color: #626b5c; }
+.paper-lines { margin-top: 1.1rem; }
+.paper-lines i { display: block; height: 3px; background: #e9e9df; margin-top: 7px; }
+.paper-lines i:last-child { width: 65%; }
+.project-link:hover .phrase-paper { transform: rotate(-2deg); }
+.keys-art { background: #282d38; color: #fff; display: flex; align-items: center; justify-content: center; }
+.key-pair { display: flex; gap: 1rem; transform: rotate(-9deg); transition: transform 220ms ease; }
+.keycap { display: flex; align-items: flex-end; padding: 1rem; width: clamp(6rem, 10vw, 9rem); aspect-ratio: 1; border: 1px solid #727681; border-radius: 14px; background: #454b58; box-shadow: 0 7px 0 #181c24, inset 0 0 0 5px #373e4c; font-size: 1.7rem; }
+.keycap:last-child { background: #dfe6bd; border-color: #e9eddb; color: #283425; box-shadow: 0 7px 0 #8b956e, inset 0 0 0 5px #cdd5a8; }
+.keys-art .art-caption { color: #c5c9d2; }
+.project-link:hover .key-pair { transform: rotate(-5deg) translateY(-3px); }
+.tfl-art { background: #e4ebf4; padding: 1.8rem; color: #253b69; }
+.route { display: flex; align-items: center; width: 80%; margin: 0.2rem 0 1.8rem; }
+.station { flex: 0 0 16px; height: 16px; border: 4px solid #3859aa; border-radius: 50%; background: #e4ebf4; }
+.route i { height: 5px; flex: 1; background: #3859aa; }
+.route-copy { font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 500; line-height: 1.05; letter-spacing: -0.04em; }
+.route-copy em { font-family: "Instrument Serif", Georgia, serif; font-size: 1.3em; font-weight: 400; }
+.season-art { background: #f1eacb; color: #485429; padding: 1.7rem; }
+.season-word { font-family: "Instrument Serif", Georgia, serif; font-size: clamp(3.5rem, 6vw, 5.5rem); line-height: 0.86; letter-spacing: -0.04em; }
+.season-stamp { position: absolute; right: 1.2rem; bottom: 1.2rem; display: grid; align-content: center; width: 5.2rem; height: 5.2rem; border: 1px solid #8b906a; border-radius: 50%; text-align: center; font-size: 0.65rem; transform: rotate(12deg); }
+.notes-art { background: #edddd5; display: flex; align-items: center; justify-content: center; }
+.note-sheet { width: 50%; min-width: 8rem; padding: 0 1.1rem 1rem; background: #fffdf6; transform: rotate(8deg); box-shadow: 0 4px 12px #634b3b12; }
+.note-top { margin: 0 -1.1rem 0.8rem; height: 1.3rem; background: #e7c86a; }
+.note-sheet > span { font-family: "Instrument Serif", Georgia, serif; font-size: clamp(2rem, 3vw, 3rem); line-height: 1; }
+footer { display: flex; justify-content: space-between; gap: 1rem; margin-top: 5rem; padding: 1.75rem 0; border-top: 1px solid #dcded7; color: #62645e; font-size: 0.8rem; }
+
+@media (min-width: 1440px) {
+    .artwork { height: 20rem; }
+    .phrase-flip .artwork, .function-keys .artwork { height: 26rem; }
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background: #17211e;
-        --surface: #1e2c26;
-        --text: #eef2eb;
-        --muted: #b3c2b8;
-        --accent: #a0d8bb;
-        --border: #394d41;
-    }
+@media (max-width: 760px) {
+    .intro { display: block; padding: 3rem 0; }
+    .intro > p { max-width: none; margin-top: 1.5rem; }
+    .projects { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem 1.25rem; }
+    .project { grid-column: span 1; }
+    .phrase-flip { grid-column: 1 / -1; }
+    .artwork, .function-keys .artwork { height: 17rem; }
+    .phrase-flip .artwork { height: 22rem; }
+    .phrase-paper p { font-size: 2.6rem; }
+    .keycap { width: 5.5rem; padding: 0.9rem; font-size: 1.2rem; }
+    .key-pair { gap: 0.6rem; }
+    .tfl-art, .season-art { padding: 1.4rem; }
+    .season-word { font-size: 4.5rem; }
+    .route-copy { font-size: 2rem; }
+    .note-sheet > span { font-size: 2.7rem; }
+}
+
+@media (max-width: 480px) {
+    .page { padding: 0 6%; }
+    .masthead { padding: 1.4rem 0; }
+    h1 { font-size: 4.6rem; }
+    .projects { grid-template-columns: 1fr; }
+    .phrase-flip { grid-column: auto; }
+    .artwork, .function-keys .artwork { height: 18rem; }
+    .phrase-flip .artwork { height: 20rem; }
+    .phrase-art { padding: 1.25rem; }
+    .phrase-paper { left: 8%; right: 8%; padding: 1.5rem; }
+    .phrase-paper p { font-size: 2.1rem; }
+    .keycap { width: 7rem; font-size: 1.5rem; }
+    .route { width: 65%; }
+    .route-copy { font-size: 2.5rem; }
+    .season-word { font-size: 5.5rem; }
+    .season-stamp { width: 6rem; height: 6rem; }
+    .note-sheet { width: 43%; }
+    .note-sheet > span { font-size: 3rem; }
+    footer { margin-top: 3rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; }
 }
