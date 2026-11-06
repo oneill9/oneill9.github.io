@@ -40,8 +40,10 @@ a:focus-visible { outline: 3px solid #3756d8; outline-offset: 7px; }
 .skip-link { position: absolute; top: -5rem; left: 1rem; padding: 1rem; background: #fff; z-index: 2; }
 .skip-link:focus { top: 1rem; }
 .masthead { display: flex; align-items: center; justify-content: space-between; padding: 2rem 0; border-bottom: 1px solid #dcded7; }
-.wordmark { font-size: 1.5rem; font-weight: 650; letter-spacing: -0.08em; }
-.wordmark-dot { color: #62763c; }
+.identity { display: flex; align-items: center; gap: 0.9rem; }
+.portrait { display: block; width: 3.5rem; height: 3.5rem; flex-shrink: 0; overflow: hidden; border-radius: 50%; }
+.portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 40% 36%; transform: scale(2); transform-origin: 40% 36%; }
+.wordmark { font-size: 1.125rem; font-weight: 550; letter-spacing: -0.025em; }
 .masthead a { font-size: 0.875rem; text-decoration: none; }
 .masthead a:hover { text-decoration: underline; }
 .masthead a span { margin-left: 0.5rem; }
@@ -101,6 +103,8 @@ footer { display: flex; justify-content: space-between; gap: 1rem; margin-top: 5
 @media (max-width: 480px) {
     .page { padding: 0 6%; }
     .masthead { padding: 1.4rem 0; }
+    .identity { gap: 0.7rem; }
+    .portrait { width: 3rem; height: 3rem; }
     h1 { font-size: 4.6rem; }
     .projects { grid-template-columns: 1fr; }
     .phrase-flip { grid-column: auto; }

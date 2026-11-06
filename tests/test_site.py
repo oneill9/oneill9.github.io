@@ -43,6 +43,16 @@ class SiteTests(unittest.TestCase):
             self.assertNotIn(phrase, html)
         self.assertIn("Selected <em>work.</em>", html)
 
+    def test_profile_identifies_the_person_behind_the_work(self):
+        html = (ROOT / "index.html").read_text()
+        self.assertIn('<span class="wordmark">Alex O\'Neill</span>', html)
+        self.assertIn("<title>Alex O'Neill | Selected work</title>", html)
+        portraits = [attrs for tag, attrs in self.page.tags
+                     if tag == "img" and attrs.get("alt") == "Alex O'Neill"]
+        self.assertEqual(len(portraits), 1)
+        self.assertLess(html.index(portraits[0]["src"]), html.index("<main>"))
+        self.assertEqual((ROOT / portraits[0]["src"]).read_bytes()[:3], b"\xff\xd8\xff")
+
     def test_repository_links_cover_only_public_projects(self):
         links = [attrs for tag, attrs in self.page.tags
                  if tag == "a" and attrs.get("class") == "repo-link"]
