@@ -111,6 +111,21 @@ class SiteTests(unittest.TestCase):
         self.assertEqual({loc.text for loc in pages.findall("s:url/s:loc", NAMESPACE)},
                          {BASE_URL, f"{BASE_URL}print-to-notes/"})
 
+    def test_google_analytics_uses_isolated_portfolio_stream(self):
+        html = (ROOT / "index.html").read_text()
+        loaders = [
+            attrs for tag, attrs in self.page.tags
+            if tag == "script" and "googletagmanager.com/gtag/js" in attrs.get("src", "")
+        ]
+        self.assertEqual(len(loaders), 1)
+        self.assertEqual(loaders[0]["src"], "https://www.googletagmanager.com/gtag/js?id=G-XNZL626J9H")
+        self.assertIn("async", loaders[0])
+        configurations = re.findall(r"gtag\('config',\s*'([^']+)',\s*\{([^}]+)\}\)", html)
+        self.assertEqual(len(configurations), 1)
+        self.assertEqual(configurations[0][0], "G-XNZL626J9H")
+        self.assertIn("cookie_path: '/'", configurations[0][1])
+        self.assertIn("cookie_prefix: 'oneill9_portfolio'", configurations[0][1])
+
     def test_robots_allows_crawling_and_advertises_index(self):
         lines = (ROOT / "robots.txt").read_text().splitlines()
         self.assertIn("User-agent: *", lines)

@@ -46,8 +46,8 @@ index and remove its homepage from `pages-sitemap.xml`.
 python3 -m unittest discover -s tests -v
 ```
 
-The tests check project links, copy, metadata, local assets, font licenses,
-screenshot dimensions, sitemap coverage, and crawler discovery.
+The tests check project links, copy, metadata, Google Analytics tracking, local assets,
+font licenses, screenshot dimensions, sitemap coverage, and crawler discovery.
 
 To refresh a thumbnail, capture the relevant page at a 1000 × 680 viewport and
 replace its PNG in `assets/previews`. Phrase Flip clips the hero. RedditViewer
