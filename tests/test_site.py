@@ -9,6 +9,8 @@ from xml.etree import ElementTree
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE_URL = "https://oneill9.github.io/"
+GITHUB_URL = "https://github.com/oneill9"
+LINKEDIN_URL = "https://www.linkedin.com/in/alexanderoneill/"
 NAMESPACE = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 PROJECTS = {"function-keys", "tfl-mcp-server", "trmnl-in-season", "print-to-notes"}
 PROJECT_URLS = {f"{BASE_URL}{name}/" for name in PROJECTS} | {
@@ -112,7 +114,12 @@ class SiteTests(unittest.TestCase):
         self.assertEqual(person["name"], "Alex O'Neill")
         self.assertEqual(person["url"], BASE_URL)
         self.assertTrue((ROOT / person["image"].removeprefix(BASE_URL)).is_file())
-        self.assertIn("https://github.com/oneill9", person["sameAs"])
+        self.assertEqual(person["sameAs"], [GITHUB_URL, LINKEDIN_URL])
+
+    def test_masthead_links_to_profiles(self):
+        html = (ROOT / "index.html").read_text()
+        masthead = html[html.index('<header class="masthead">'):html.index("</header>")]
+        self.assertEqual(re.findall(r'href="(https://[^"]+)"', masthead), [GITHUB_URL, LINKEDIN_URL])
 
     def test_not_found_page_links_home_and_is_published(self):
         page = Page()
