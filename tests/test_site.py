@@ -1,3 +1,4 @@
+import json
 import unittest
 import re
 import struct
@@ -82,6 +83,46 @@ class SiteTests(unittest.TestCase):
             asset = attrs.get("src") if tag in {"script", "img"} else attrs.get("href") if tag == "link" else None
             if asset and not asset.startswith("https://"):
                 self.assertTrue((ROOT / asset.split("?")[0]).is_file(), asset)
+
+    def test_favicon_and_touch_icon_are_local(self):
+        icons = {attrs["rel"]: attrs for tag, attrs in self.page.tags
+                 if tag == "link" and attrs.get("rel") in {"icon", "apple-touch-icon"}}
+        self.assertEqual(icons["icon"]["type"], "image/svg+xml")
+        self.assertIn("<svg", (ROOT / icons["icon"]["href"]).read_text())
+        data = (ROOT / icons["apple-touch-icon"]["href"]).read_bytes()
+        self.assertEqual(data[:8], b"\x89PNG\r\n\x1a\n")
+        self.assertEqual(struct.unpack(">II", data[16:24]), (180, 180))
+
+    def test_social_preview_uses_a_published_image(self):
+        meta = {attrs.get("property") or attrs.get("name"): attrs["content"]
+                for tag, attrs in self.page.tags if tag == "meta" and "content" in attrs}
+        self.assertTrue(meta["og:image"].startswith(BASE_URL))
+        image = ROOT / meta["og:image"].removeprefix(BASE_URL)
+        self.assertEqual(image.read_bytes()[:3], b"\xff\xd8\xff")
+        self.assertEqual((meta["og:image:width"], meta["og:image:height"]), ("1200", "630"))
+        self.assertTrue(meta["og:image:alt"].strip())
+        self.assertEqual(meta["twitter:card"], "summary_large_image")
+
+    def test_structured_data_describes_the_person(self):
+        html = (ROOT / "index.html").read_text()
+        blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)
+        self.assertEqual(len(blocks), 1)
+        person = json.loads(blocks[0])
+        self.assertEqual(person["@type"], "Person")
+        self.assertEqual(person["name"], "Alex O'Neill")
+        self.assertEqual(person["url"], BASE_URL)
+        self.assertTrue((ROOT / person["image"].removeprefix(BASE_URL)).is_file())
+        self.assertIn("https://github.com/oneill9", person["sameAs"])
+
+    def test_not_found_page_links_home_and_is_published(self):
+        page = Page()
+        page.feed((ROOT / "404.html").read_text())
+        self.assertIn(("meta", {"name": "robots", "content": "noindex"}), page.tags)
+        self.assertIn(("a", {"href": BASE_URL}), page.tags)
+        for tag, attrs in page.tags:
+            if tag == "link" and attrs.get("rel") == "stylesheet":
+                self.assertTrue(attrs["href"].startswith("/"), "404 is served at any depth")
+        self.assertIn("404.html", (ROOT / ".github/workflows/pages.yml").read_text())
 
     def test_each_project_has_a_local_page_preview(self):
         images = [attrs for tag, attrs in self.page.tags

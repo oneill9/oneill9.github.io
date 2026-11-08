@@ -46,7 +46,7 @@ a:focus-visible { outline: 3px solid #3756d8; outline-offset: 7px; }
 .wordmark { font-size: 1.125rem; font-weight: 550; letter-spacing: -0.025em; }
 .masthead a { font-size: 0.875rem; text-decoration: none; }
 .masthead a:hover { text-decoration: underline; }
-.masthead a span { margin-left: 0.5rem; }
+.masthead a span[aria-hidden] { margin-left: 0.5rem; }
 .intro { padding: 4.5rem 0 4rem; display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; }
 h1 { font-family: "Instrument Serif", Georgia, serif; font-size: clamp(4.5rem, 9vw, 8.5rem); font-weight: 400; line-height: 0.95; letter-spacing: -0.045em; margin: 0; }
 h1 em { font-weight: 400; }

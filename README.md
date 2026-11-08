@@ -13,7 +13,11 @@ Each project site continues to deploy from its own repository.
 - GitHub icons link to the four public project repositories. Phrase Flip and
   RedditViewer have private repositories and do not have source links.
 - `assets/icons` contains the GitHub mark from [Octicons](https://github.com/primer/octicons)
-  and its MIT license.
+  and its MIT license, plus the "AO" favicon. `apple-touch-icon.png` is rendered from
+  `favicon.svg` without the rounded corners:
+  `sed 's/ rx="14"//' assets/icons/favicon.svg | rsvg-convert -w 180 -h 180 -o assets/icons/apple-touch-icon.png`.
+- `assets/images/social-preview.jpg` is the 1200 × 630 link-preview image, cropped from the portrait.
+- `404.html` is served for missing pages. It uses root-relative asset paths so it renders at any depth.
 - `sitemap.xml` is a sitemap index for the existing project sitemaps and `pages-sitemap.xml`.
 - `pages-sitemap.xml` covers this homepage and Print to Notes, which has no sitemap of its own.
 - `robots.txt` allows crawling and advertises the sitemap index for the entire host.
@@ -22,7 +26,7 @@ Each project site continues to deploy from its own repository.
 
 Enable GitHub Pages in the repository settings with **GitHub Actions** as its
 source. The workflow tests every pull request and deploys successful pushes to
-`main`. It uploads the five public site files and assets, excluding tests and this README.
+`main`. It uploads the six public site files and assets, excluding tests and this README.
 No build dependencies are required.
 
 After deployment, submit `https://oneill9.github.io/sitemap.xml` in Google Search
@@ -46,7 +50,7 @@ index and remove its homepage from `pages-sitemap.xml`.
 python3 -m unittest discover -s tests -v
 ```
 
-The tests check project links, copy, metadata, Google Analytics tracking, local assets,
+The tests check project links, copy, metadata, icons, link previews, structured data, the 404 page, Google Analytics tracking, local assets,
 font licenses, screenshot dimensions, sitemap coverage, and crawler discovery.
 
 To refresh a thumbnail, capture the relevant page at a 1000 × 680 viewport and
