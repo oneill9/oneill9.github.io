@@ -19,7 +19,7 @@ jobs:
       - name: Stage public files
         run: |
           mkdir _site
-          cp index.html 404.html styles.css robots.txt sitemap.xml pages-sitemap.xml _site/
+          cp index.html 404.html styles.css robots.txt sitemap.xml pages-sitemap.xml 7a063a25e890b5f15600e7fc94e6d97c.txt _site/
           cp -R assets _site/
       - name: Upload site
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
@@ -46,3 +46,31 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+
+  indexnow:
+    name: Notify IndexNow
+    needs: deploy
+    permissions: {}
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Notify IndexNow
+        run: |
+          test "$(curl --silent --show-error --fail \
+            --retry 5 --retry-delay 2 --retry-all-errors \
+            "https://oneill9.github.io/7a063a25e890b5f15600e7fc94e6d97c.txt")" \
+            = "7a063a25e890b5f15600e7fc94e6d97c"
+          curl --silent --show-error --fail-with-body \
+            --request POST "https://api.indexnow.org/indexnow" \
+            --header "Content-Type: application/json; charset=utf-8" \
+            --data-binary '{
+              "host": "oneill9.github.io",
+              "key": "7a063a25e890b5f15600e7fc94e6d97c",
+              "keyLocation": "https://oneill9.github.io/7a063a25e890b5f15600e7fc94e6d97c.txt",
+              "urlList": [
+                "https://oneill9.github.io/",
+                "https://oneill9.github.io/print-to-notes/"
+              ]
+            }'
+          echo "### IndexNow" >> "$GITHUB_STEP_SUMMARY"
+          echo "Notified search engines of updated pages" >> "$GITHUB_STEP_SUMMARY"

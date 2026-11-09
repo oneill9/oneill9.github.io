@@ -26,7 +26,9 @@ Each project site continues to deploy from its own repository.
 
 Enable GitHub Pages in the repository settings with **GitHub Actions** as its
 source. The workflow tests every pull request and deploys successful pushes to
-`main`. It uploads the six public site files and assets, excluding tests and this README.
+`main`. It uploads the seven public site files and assets, excluding tests and this README.
+After each deploy it notifies IndexNow of the `pages-sitemap.xml` URLs, using the key in
+the root `<32 hex chars>.txt` file.
 No build dependencies are required.
 
 After deployment, submit `https://oneill9.github.io/sitemap.xml` in Google Search
@@ -36,7 +38,8 @@ Console for a verified property covering `https://oneill9.github.io/`. This adve
 
 1. Add its project link and description to `index.html`.
 2. If it has a sitemap on `oneill9.github.io`, add the sitemap URL to `sitemap.xml`.
-   Otherwise, add its homepage URL to `pages-sitemap.xml`.
+   Otherwise, add its homepage URL to `pages-sitemap.xml` and the IndexNow `urlList`
+   in `.github/workflows/pages.yml`.
 3. For external domains like Phrase Flip, link from the portfolio but leave their
    sitemaps on their own domains.
 4. Update the expected projects in `tests/test_site.py` and run the tests.

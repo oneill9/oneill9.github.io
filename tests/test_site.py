@@ -159,6 +159,24 @@ class SiteTests(unittest.TestCase):
         self.assertEqual({loc.text for loc in pages.findall("s:url/s:loc", NAMESPACE)},
                          {BASE_URL, f"{BASE_URL}print-to-notes/"})
 
+    def test_indexnow_is_notified_after_deployment_for_every_page_sitemap_url(self):
+        key_files = [path for path in ROOT.glob("*.txt") if re.fullmatch(r"[0-9a-f]{32}", path.stem)]
+        self.assertEqual(len(key_files), 1)
+        key = key_files[0].stem
+        self.assertEqual(key_files[0].read_text().strip(), key)
+        workflow = (ROOT / ".github/workflows/pages.yml").read_text()
+        self.assertIn(f"{key}.txt", workflow[workflow.index("Stage public files"):])
+        self.assertRegex(workflow, r"\n  indexnow:\n(?:.*\n)*?    needs: deploy\n")
+        self.assertIn("--fail-with-body", workflow)
+        payload = json.loads(re.search(r"--data-binary\s+'(\{[\s\S]*?\})'", workflow).group(1))
+        pages = ElementTree.parse(ROOT / "pages-sitemap.xml")
+        self.assertEqual(payload, {
+            "host": "oneill9.github.io",
+            "key": key,
+            "keyLocation": f"{BASE_URL}{key}.txt",
+            "urlList": [loc.text for loc in pages.findall("s:url/s:loc", NAMESPACE)],
+        })
+
     def test_google_analytics_uses_isolated_portfolio_stream(self):
         html = (ROOT / "index.html").read_text()
         loaders = [
