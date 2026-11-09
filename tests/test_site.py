@@ -166,11 +166,11 @@ class SiteTests(unittest.TestCase):
             if tag == "script" and "googletagmanager.com/gtag/js" in attrs.get("src", "")
         ]
         self.assertEqual(len(loaders), 1)
-        self.assertEqual(loaders[0]["src"], "https://www.googletagmanager.com/gtag/js?id=G-XNZL626J9H")
+        self.assertEqual(loaders[0]["src"], "https://www.googletagmanager.com/gtag/js?id=G-G0WZ5BYB00")
         self.assertIn("async", loaders[0])
         configurations = re.findall(r"gtag\('config',\s*'([^']+)',\s*\{([^}]+)\}\)", html)
         self.assertEqual(len(configurations), 1)
-        self.assertEqual(configurations[0][0], "G-XNZL626J9H")
+        self.assertEqual(configurations[0][0], "G-G0WZ5BYB00")
         self.assertIn("cookie_path: '/'", configurations[0][1])
         self.assertIn("cookie_prefix: 'oneill9_portfolio'", configurations[0][1])
 
